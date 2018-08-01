@@ -41,7 +41,7 @@ def get_number_resources():
     return resources
 
 
-def predict_maximum_resources(numClients, totalResources):
+def predict_maximum_resources(numClient, totalResources):
     """"
     predicts maximum resource by setting them to a random value between 0 to max available
     """
@@ -49,7 +49,7 @@ def predict_maximum_resources(numClients, totalResources):
     import random
 
     maxResources = []
-    for i in range(0, numClients):
+    for i in range(0, numClient):
 
         row = []
         for r in totalResources:
@@ -60,13 +60,13 @@ def predict_maximum_resources(numClients, totalResources):
 
     return maxResources
 
-def initialize_current_allocations(numClients, totalResources):
+def initialize_current_allocations(numClient, totalResources):
     """"
     initialize current allocations to 0
     """
 
     allocations = []
-    for i in range(0, numClients):
+    for i in range(0, numClient):
 
         row = []
         for r in totalResources:
@@ -103,14 +103,14 @@ print_welcome()
 
 # intialize the data structures and get user input
 
-numClients = int(input("Enter the number of clients:"))
+numClient = int(input("Enter the number of clients:"))
 
 E_TotalResources = get_number_resources()
 print("gE_TotalResources = " + str(E_TotalResources))
 
-R_MaximumRequest = predict_maximum_resources(numClients, E_TotalResources)
+R_MaximumRequest = predict_maximum_resources(numClient, E_TotalResources)
 
-C_CurrentAllocations = initialize_current_allocations(numClients, E_TotalResources)
+C_CurrentAllocations = initialize_current_allocations(numClient, E_TotalResources)
 
 # all resources are initially available
 A_AvailableResources = E_TotalResources
@@ -125,9 +125,19 @@ while not userQuit:
     client = input("[Enter the client number or 'q' to quit:]")
     print()
 
+    validClient = False
+
     if client == "q":
         userQuit = True
     else:
+        # check the client number
+        if int(client) >= 0 and int(client) < numClient:
+            validClient = True
+        else:
+            print("Error: Invalid client number.")
+            validClient = False
+
+    if (not userQuit) and validClient:
         #print_available_resources(A_AvailableResources)
 
         request = get_client_request(client)
