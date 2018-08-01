@@ -92,14 +92,12 @@ def get_client_request(c):
 
     return request
 
+
 #
 # main routine
 #
 # E, C, R, and A structures
-E_TotalResources = []
-A_AvailableResources = []
-C_CurrentAllocations = []
-R_MaximumRequest = []
+
 
 print_welcome()
 
@@ -142,7 +140,11 @@ while not userQuit:
         # with matrices printed nicely for debugging results
 
 
-print("gResourceTypes = " + str(gResourceTypes))
+print("E_TotalResources = " + str(E_TotalResources))
+print("A_AvailableResources = " + str(A_AvailableResources))
+print("C_CurrentAllocations = " + str(C_CurrentAllocations))
+print("R_MaximumRequest = " + str(R_MaximumRequest))
+
 
 
 
