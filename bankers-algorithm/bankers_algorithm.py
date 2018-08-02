@@ -31,7 +31,7 @@ def print_welcome():
 
 
 def get_number_resources():
-    """"
+    """
     get initial information from user on number of resources
     """
     resources = []
@@ -44,7 +44,7 @@ def get_number_resources():
 
 
 def predict_maximum_resources(numClient, totalResources):
-    """"
+    """
     predicts maximum resource by setting them to a random value between 0 to max available
     """
 
@@ -63,7 +63,7 @@ def predict_maximum_resources(numClient, totalResources):
     return maxResources
 
 def initialize_current_allocations(numClient, totalResources):
-    """"
+    """
     initialize current allocations to 0
     """
 
@@ -78,8 +78,9 @@ def initialize_current_allocations(numClient, totalResources):
 
     return allocations
 
+
 def get_client_request(c):
-    """"
+    """
     get client resource request
     """
 
@@ -95,8 +96,16 @@ def get_client_request(c):
     return request
 
 
+def print_resource_vector(v):
+    """
+    print a resource vector
+    """
+    for i in range(0, len(v)):
+        print("\t" + gResourceTypes[i] + " = " + str(v[i]))
+
+
 def print_status(numClient, E_TotalResources, R_MaximumRequest, C_CurrentAllocations, A_AvailableResources):
-    """"
+    """
     prints the bankers algorithm data structures
     """
 
@@ -128,6 +137,15 @@ def print_status(numClient, E_TotalResources, R_MaximumRequest, C_CurrentAllocat
             sys.stdout.write(str(R_MaximumRequest[c][r]))
         sys.stdout.write("\n")
 
+
+def is_request_safe(request,E_TotalResources, R_MaximumRequest, C_CurrentAllocations, A_AvailableResources):
+    """
+    determine if the request is safe or unsafe
+    """
+
+    safe = False
+
+    return safe
 
 
 #
@@ -188,9 +206,19 @@ while not userQuit:
 
         request = get_client_request(client)
 
-        print("Request = " + request)
+        # print("Request = " + str(request))
 
-        # safe = is_request_safe(request,E_TotalResources, R_MaximumRequest, C_CurrentAllocations, A_AvailableResources)
+        # check if the request is safe
+        safe = is_request_safe(request,E_TotalResources, R_MaximumRequest, C_CurrentAllocations, A_AvailableResources)
+
+        print("Request for:")
+        print_resource_vector(request)
+        if safe:
+            print(" is SAFE.")
+        else:
+            print(" is UNSAFE.")
+
+        
         # if the request is safe
         # execute_the_request(request,E_TotalResources, R_MaximumRequest, C_CurrentAllocations, A_AvailableResources)
 
