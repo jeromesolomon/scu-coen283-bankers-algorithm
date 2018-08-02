@@ -10,6 +10,8 @@ is safe or unsafe. Output a log of requests and decisions to a file.
 
 """
 
+import sys
+
 # types of resources available
 gResourceTypes = ["printer", "network storage", "scanner"]
 
@@ -35,7 +37,7 @@ def get_number_resources():
     resources = []
     # get the number of resources for each resource type
     for e in enumerate(gResourceTypes):
-        n = input("Enter number of resource #" + str(e[0]) + " <" + e[1] + "> :")
+        n = input("Enter number of resources for resource #" + str(e[0]) + " <" + e[1] + "> :")
         resources.append(int(n))
 
     return resources
@@ -87,10 +89,45 @@ def get_client_request(c):
 
 
     for r in gResourceTypes:
-        userRequest = input("\tEnter the number of <" + r + "> :")
+        userRequest = input("\tEnter the number of <" + r + "> resources you are requesting :")
         request.append(userRequest)
 
     return request
+
+
+def print_status(numClient, E_TotalResources, R_MaximumRequest, C_CurrentAllocations, A_AvailableResources):
+    """"
+    prints the bankers algorithm data structures
+    """
+
+    print("-------------")
+    print("System Status")
+    print("-------------")
+
+    print("E Total Resources: " + str(E_TotalResources))
+    for i in range(0, len(E_TotalResources)):
+        print("\t" + gResourceTypes[i] + " = " + str(E_TotalResources[i]))
+
+    print("A Available Resources: " + str(A_AvailableResources))
+    for i in range(0, len(A_AvailableResources)):
+        print("\t" + gResourceTypes[i] + " = " + str(A_AvailableResources[i]))
+
+    print("Current Allocation:")
+    for c in range(0, numClient):
+        sys.stdout.write("\t" + "Client #" + str(c))
+        for r in range(0, len(gResourceTypes)):
+            sys.stdout.write(" " + gResourceTypes[r] + " = ")
+            sys.stdout.write(str(C_CurrentAllocations[c][r]))
+        sys.stdout.write("\n")
+
+    print("Maximum Requests")
+    for c in range(0, numClient):
+        sys.stdout.write("\t" + "Client #" + str(c))
+        for r in range(0, len(gResourceTypes)):
+            sys.stdout.write(" " + gResourceTypes[r] + " = ")
+            sys.stdout.write(str(R_MaximumRequest[c][r]))
+        sys.stdout.write("\n")
+
 
 
 #
@@ -104,9 +141,10 @@ print_welcome()
 # intialize the data structures and get user input
 
 numClient = int(input("Enter the number of clients:"))
+print()
 
 E_TotalResources = get_number_resources()
-print("gE_TotalResources = " + str(E_TotalResources))
+print()
 
 R_MaximumRequest = predict_maximum_resources(numClient, E_TotalResources)
 
@@ -115,6 +153,14 @@ C_CurrentAllocations = initialize_current_allocations(numClient, E_TotalResource
 # all resources are initially available
 A_AvailableResources = E_TotalResources
 
+
+
+# print the initial status
+print_status(numClient, E_TotalResources, R_MaximumRequest, C_CurrentAllocations, A_AvailableResources)
+
+#
+# loop until user quits and ask for resource requests
+#
 request = []
 
 userQuit = False
@@ -122,7 +168,7 @@ userQuit = False
 while not userQuit:
 
     print()
-    client = input("[Enter the client number or 'q' to quit:]")
+    client = input("[Enter the client number 0-" + str(numClient-1) + " to request resources or 'q' to quit:]")
     print()
 
     validClient = False
@@ -131,7 +177,7 @@ while not userQuit:
         userQuit = True
     else:
         # check the client number
-        if int(client) >= 0 and int(client) < numClient:
+        if 0 <= int(client) < numClient:
             validClient = True
         else:
             print("Error: Invalid client number.")
@@ -142,18 +188,18 @@ while not userQuit:
 
         request = get_client_request(client)
 
-        # is the request safe or unsafe
+        print("Request = " + request)
 
-        # if the request is safe service it
+        # safe = is_request_safe(request,E_TotalResources, R_MaximumRequest, C_CurrentAllocations, A_AvailableResources)
+        # if the request is safe
+        # execute_the_request(request,E_TotalResources, R_MaximumRequest, C_CurrentAllocations, A_AvailableResources)
 
         # save request and if it is safe or unsafe into a txt file
-        # with matrices printed nicely for debugging results
+        # save matrices printed nicely for debugging results
 
 
-print("E_TotalResources = " + str(E_TotalResources))
-print("A_AvailableResources = " + str(A_AvailableResources))
-print("C_CurrentAllocations = " + str(C_CurrentAllocations))
-print("R_MaximumRequest = " + str(R_MaximumRequest))
+# print the final status
+print_status(numClient, E_TotalResources, R_MaximumRequest, C_CurrentAllocations, A_AvailableResources)
 
 
 
