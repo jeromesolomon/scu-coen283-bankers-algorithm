@@ -79,19 +79,34 @@ def initialize_current_allocations(numClient, totalResources):
     return allocations
 
 
-def get_client_request(c):
+def get_client_request(client, R_MaximumRequest, C_CurrentAllocations):
     """
     get client resource request
     """
 
     request = []
 
-    print("Request for client #" + str(c) + ":")
+    print("Request for client #" + str(client) + ":")
 
+    r = 0
+    for resource in gResourceTypes:
+        maxResourceRequest = R_MaximumRequest[client][r] - C_CurrentAllocations[client][r]
 
-    for r in gResourceTypes:
-        userRequest = input("\tEnter the number of <" + r + "> resources you are requesting :")
-        request.append(userRequest)
+        validInput = False
+        userRequest = 0
+
+        while not validInput:
+            userRequestStr = input("\tEnter the number of <" + resource + "> resources you are requesting (from 0-" +
+                                    str(maxResourceRequest) + ") :")
+            userRequest = int(userRequestStr)
+            if 0 <= userRequest <= maxResourceRequest:
+                validInput = True
+            else:
+                print ("Client requested too many resources.  Must be in range from 0-" + str(maxResourceRequest) + ".")
+
+        request.append(int(userRequest))
+
+        r = r + 1
 
     return request
 
@@ -114,38 +129,104 @@ def print_status(numClient, E_TotalResources, R_MaximumRequest, C_CurrentAllocat
     print("-------------")
 
     print("E Total Resources: " + str(E_TotalResources))
-    for i in range(0, len(E_TotalResources)):
-        print("\t" + gResourceTypes[i] + " = " + str(E_TotalResources[i]))
+    print_resource_vector(E_TotalResources)
 
     print("A Available Resources: " + str(A_AvailableResources))
-    for i in range(0, len(A_AvailableResources)):
-        print("\t" + gResourceTypes[i] + " = " + str(A_AvailableResources[i]))
+    print_resource_vector(A_AvailableResources)
 
     print("Current Allocation:")
-    for c in range(0, numClient):
-        sys.stdout.write("\t" + "Client #" + str(c))
-        for r in range(0, len(gResourceTypes)):
-            sys.stdout.write(" " + gResourceTypes[r] + " = ")
-            sys.stdout.write(str(C_CurrentAllocations[c][r]))
+    for client in range(0, numClient):
+        sys.stdout.write("\t" + "Client #" + str(client))
+        for resource in range(0, len(gResourceTypes)):
+            sys.stdout.write(" " + gResourceTypes[resource] + " = ")
+            sys.stdout.write(str(C_CurrentAllocations[client][resource]))
         sys.stdout.write("\n")
 
     print("Maximum Requests")
-    for c in range(0, numClient):
-        sys.stdout.write("\t" + "Client #" + str(c))
-        for r in range(0, len(gResourceTypes)):
-            sys.stdout.write(" " + gResourceTypes[r] + " = ")
-            sys.stdout.write(str(R_MaximumRequest[c][r]))
+    for client in range(0, numClient):
+        sys.stdout.write("\t" + "Client #" + str(client))
+        for resource in range(0, len(gResourceTypes)):
+            sys.stdout.write(" " + gResourceTypes[resource] + " = ")
+            sys.stdout.write(str(R_MaximumRequest[client][resource]))
         sys.stdout.write("\n")
 
 
-def is_request_safe(request,E_TotalResources, R_MaximumRequest, C_CurrentAllocations, A_AvailableResources):
+def is_request_satisfied_by_available(request, A_AvailableResources):
     """
-    determine if the request is safe or unsafe
+    determine if the request can be satisfied by available resources
     """
 
-    safe = False
+    canBeSatisfied = False
 
-    return safe
+    # check if there are resources available to satisfy the request. If so, it is safe.
+    # subtract the vectors, if sum is >= 0, then resources are available to satisfy the request
+    # in the available resources
+    diff = list(map(int.__sub__,A_AvailableResources,request))
+    diffSum = sum(diff)
+    if diffSum >= 0:
+        canBeSatisfied = True
+
+    return canBeSatisfied
+
+
+def is_request_satisfied_by_paid_loans(request, numClient, E_TotalResources, R_MaximumRequest, C_CurrentAllocations, A_AvailableResources):
+    """
+    determine if the request can be satisfied by loans being paid back to the bank.
+    can we complete any clients requests with available resources
+    """
+
+    canBeSatisfied = False
+
+    #
+    # calculate the total amount of potential resources available
+    #
+    # for each client if it can be satisfied with the available resources
+    # and those resources can be given back to the potential resources
+
+    potentialAvailableResources = A_AvailableResources
+
+    # for each client find out if it can be satisfied with available resources
+    for client in range(0, numClient):
+
+        # how many resources are remaining and still needed by this client
+        remainingNeededResources = list(map(int.__sub__,R_MaximumRequest[client],C_CurrentAllocations[client]))
+
+        # if we use all the available resources, what is owed
+        owedResources = list(map(int.__sub__, remainingNeededResources, A_AvailableResources))
+
+        # if any of the owedResources are negative, we do not have enough available
+        # resources to pay off the loan
+        canPayOff = True
+        for r in owedResources:
+            if r > 0:
+                canPayOff = False
+
+        # if we can pay off the loan, add the current allocations to the potential available resources
+        if canPayOff:
+            potentialAvailableResources += C_CurrentAllocations[client]
+
+    # see if the potentially available resources can satisfy the request
+    canPayOff = True
+    owedResources = list(map(int.__sub__, request, potentialAvailableResources))
+    for r in owedResources:
+        if r > 0:
+            canPayOff = False
+
+    # if can pay off with potential available resources, then the request can be satisfied
+    canBeSatisfied = canPayOff
+
+    return canBeSatisfied
+
+
+def execute_the_request(request, client, C_CurrentAllocations, A_AvailableResources):
+    """
+    executive the request and adjust the current allocations and available resources
+    """
+
+    # adjust the balances
+    for resource in range(0,len(gResourceTypes)):
+        A_AvailableResources[resource] = A_AvailableResources[resource] - request[resource]
+        C_CurrentAllocations[client][resource] = C_CurrentAllocations[client][resource] + request[resource]
 
 
 #
@@ -204,12 +285,23 @@ while not userQuit:
     if (not userQuit) and validClient:
         #print_available_resources(A_AvailableResources)
 
-        request = get_client_request(client)
+        request = get_client_request(int(client), R_MaximumRequest, C_CurrentAllocations)
 
         # print("Request = " + str(request))
 
         # check if the request is safe
-        safe = is_request_safe(request,E_TotalResources, R_MaximumRequest, C_CurrentAllocations, A_AvailableResources)
+        satisfiedByAvailableResources = is_request_satisfied_by_available(request, A_AvailableResources)
+
+        if satisfiedByAvailableResources:
+            print ("Request can be satisfied by available resources.")
+            safe = True
+
+        satisfiedByPaidLoans= is_request_satisfied_by_paid_loans(request, numClient, E_TotalResources, R_MaximumRequest,
+                                                                 C_CurrentAllocations, A_AvailableResources)
+
+        if satisfiedByPaidLoans:
+            print("Request can be satisfied by paid loans.")
+            safe = True
 
         print("Request for:")
         print_resource_vector(request)
@@ -218,9 +310,14 @@ while not userQuit:
         else:
             print(" is UNSAFE.")
 
-        
+
         # if the request is safe
         # execute_the_request(request,E_TotalResources, R_MaximumRequest, C_CurrentAllocations, A_AvailableResources)
+        if safe:
+            print("Executing the request.")
+            execute_the_request(request, int(client), C_CurrentAllocations, A_AvailableResources)
+        else:
+            print("Request can not be safely-satisfied and will not be executed.")
 
         # save request and if it is safe or unsafe into a txt file
         # save matrices printed nicely for debugging results
