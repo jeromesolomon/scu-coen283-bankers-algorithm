@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3deed72c-3965-44bb-8e2a-681bcf45da3a" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bankers_algorithm.py" beforeDir="false" afterPath="$PROJECT_DIR$/bankers_algorithm.py" afterDir="false" />
-    </list>
+    <list default="true" id="3deed72c-3965-44bb-8e2a-681bcf45da3a" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,6 +12,7 @@
     <session id="504331086">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="1" />
           <entry key="project.open.time.4" value="1" />
           <entry key="project.opened" value="1" />
         </counts>
@@ -36,8 +34,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bankers_algorithm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+            <state relative-caret-position="170">
+              <caret line="10" column="3" lean-forward="true" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
               <folding>
                 <marker date="1533442519906" expanded="true" signature="5408:5413" ph="..." />
               </folding>
@@ -178,7 +176,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4730501" visible="true" weight="0.34231806" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4730501" weight="0.34231806" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.47916666" weight="0.39872748" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -211,8 +209,8 @@
     <entry file="file://$PROJECT_DIR$/../../scu-coen283-bakers-algorithm/bakers algorithm/bankers_algorithm.py" />
     <entry file="file://$PROJECT_DIR$/bankers_algorithm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+        <state relative-caret-position="170">
+          <caret line="10" column="3" lean-forward="true" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
           <folding>
             <marker date="1533442519906" expanded="true" signature="5408:5413" ph="..." />
           </folding>
