@@ -1,0 +1,155 @@
+
+
+------------------------------------------
+		Banker's Algorithm Simulation
+		Jerome Solomon
+		COEN 283 Operating Systems
+		Homework Assignment 4
+		Professor Amr Elkady
+------------------------------------------
+
+
+Enter the number of clients:3
+
+Enter number of total resources for <printer> :3
+Enter number of total resources for <network storage> :3
+Enter number of total resources for <scanner> :3
+
+------------------------------------------
+System Status
+------------------------------------------
+E Total Resources: [3, 3, 3]
+	printer = 3
+	network storage = 3
+	scanner = 3
+A Available Resources: [3, 3, 3]
+	printer = 3
+	network storage = 3
+	scanner = 3
+Current Allocation:
+	Client #0 [ printer = 0 network storage = 0 scanner = 0]
+	Client #1 [ printer = 0 network storage = 0 scanner = 0]
+	Client #2 [ printer = 0 network storage = 0 scanner = 0]
+Maximum Requests
+	Client #0 [ printer = 3 network storage = 0 scanner = 1]
+	Client #1 [ printer = 2 network storage = 1 scanner = 3]
+	Client #2 [ printer = 1 network storage = 2 scanner = 3]
+------------------------------------------
+
+[Enter the client number 0-2 to request resources or 'q' to quit:]0
+
+Request for client #0:
+	Enter the number of <printer> resources you are requesting (from 0-3) :2
+	Enter the number of <network storage> resources you are requesting (from 0-0) :0
+	Enter the number of <scanner> resources you are requesting (from 0-1) :0
+------------------------------------------
+Request
+------------------------------------------
+Clients can complete in the order:[0, 1, 2]
+Request is for:
+	printer = 2
+	network storage = 0
+	scanner = 0
+Request for:[2, 0, 0] is SAFE.
+Executing the request.
+------------------------------------------
+
+------------------------------------------
+System Status
+------------------------------------------
+E Total Resources: [3, 3, 3]
+	printer = 3
+	network storage = 3
+	scanner = 3
+A Available Resources: [1, 3, 3]
+	printer = 1
+	network storage = 3
+	scanner = 3
+Current Allocation:
+	Client #0 [ printer = 2 network storage = 0 scanner = 0]
+	Client #1 [ printer = 0 network storage = 0 scanner = 0]
+	Client #2 [ printer = 0 network storage = 0 scanner = 0]
+Maximum Requests
+	Client #0 [ printer = 3 network storage = 0 scanner = 1]
+	Client #1 [ printer = 2 network storage = 1 scanner = 3]
+	Client #2 [ printer = 1 network storage = 2 scanner = 3]
+------------------------------------------
+
+[Enter the client number 0-2 to request resources or 'q' to quit:]1
+
+Request for client #1:
+	Enter the number of <printer> resources you are requesting (from 0-2) :1
+	Enter the number of <network storage> resources you are requesting (from 0-1) :0
+	Enter the number of <scanner> resources you are requesting (from 0-3) :0
+------------------------------------------
+Request
+------------------------------------------
+Clients can complete in the order:[0, 1, 2]
+Request is for:
+	printer = 1
+	network storage = 0
+	scanner = 0
+Request for:[1, 0, 0] is SAFE.
+Executing the request.
+------------------------------------------
+
+------------------------------------------
+System Status
+------------------------------------------
+E Total Resources: [3, 3, 3]
+	printer = 3
+	network storage = 3
+	scanner = 3
+A Available Resources: [0, 3, 3]
+	printer = 0
+	network storage = 3
+	scanner = 3
+Current Allocation:
+	Client #0 [ printer = 2 network storage = 0 scanner = 0]
+	Client #1 [ printer = 1 network storage = 0 scanner = 0]
+	Client #2 [ printer = 0 network storage = 0 scanner = 0]
+Maximum Requests
+	Client #0 [ printer = 3 network storage = 0 scanner = 1]
+	Client #1 [ printer = 2 network storage = 1 scanner = 3]
+	Client #2 [ printer = 1 network storage = 2 scanner = 3]
+------------------------------------------
+
+[Enter the client number 0-2 to request resources or 'q' to quit:]2
+
+Request for client #2:
+	Enter the number of <printer> resources you are requesting (from 0-1) :1
+	Enter the number of <network storage> resources you are requesting (from 0-2) :0
+	Enter the number of <scanner> resources you are requesting (from 0-3) :0
+------------------------------------------
+Request
+------------------------------------------
+Request is for:
+	printer = 1
+	network storage = 0
+	scanner = 0
+Request for:[1, 0, 0] is UNSAFE.
+Request can not be safely-satisfied and will not be executed.
+------------------------------------------
+
+------------------------------------------
+System Status
+------------------------------------------
+E Total Resources: [3, 3, 3]
+	printer = 3
+	network storage = 3
+	scanner = 3
+A Available Resources: [0, 3, 3]
+	printer = 0
+	network storage = 3
+	scanner = 3
+Current Allocation:
+	Client #0 [ printer = 2 network storage = 0 scanner = 0]
+	Client #1 [ printer = 1 network storage = 0 scanner = 0]
+	Client #2 [ printer = 0 network storage = 0 scanner = 0]
+Maximum Requests
+	Client #0 [ printer = 3 network storage = 0 scanner = 1]
+	Client #1 [ printer = 2 network storage = 1 scanner = 3]
+	Client #2 [ printer = 1 network storage = 2 scanner = 3]
+------------------------------------------
+
+[Enter the client number 0-2 to request resources or 'q' to quit:]
